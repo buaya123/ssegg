@@ -52,7 +52,7 @@ app.post('/postpeople', (req, res,next) => {
     if (error) {
         return res.status(500).json(error);
     }
-    res.status(200).json("Form Submition Successful");
+    res.status(200).json("Form Submission Successful");
     });
 })
 
