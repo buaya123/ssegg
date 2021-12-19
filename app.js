@@ -57,7 +57,7 @@ app.post('/postpeople', (req, res,next) => {
     });
 })
 
-app.post('/reshuffletanan',(req,res)=>{
+app.get('/reshuffletanan',(req,res)=>{
   var arr = [];
   var sql = "SELECT * FROM exchange"
   con.query(sql , (err, results)=>{
