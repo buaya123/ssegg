@@ -19,17 +19,26 @@ app.use(function(req,res,next){
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-var con = mysql.createConnection({
+// var con = mysql.createConnection({
+//   connectionLimit : 20,
+//   host: "db4free.net",
+//   user: "kimmers",
+//   password: "imongmama",
+//   database : "ssegg123",
+// });
+
+var pool  = mysql.createPool({
+  connectionLimit : 10,
   host: "db4free.net",
   user: "kimmers",
   password: "imongmama",
-  database : "ssegg123",
+  database : "ssegg123"
 });
 
-con.connect(function(err) {
-  if (err) throw err;
-  console.log("Connected!");
-});
+// pool.connect(function(err) {
+//   if (err) throw err;
+//   console.log("Connected!");
+// });
 
 
 app.get('/', (req, res) => {
@@ -37,13 +46,13 @@ app.get('/', (req, res) => {
   })
 
 
-app.post('/postpeople', (req, res) => {
-  var sql = "INSERT INTO people VALUES (NULL,'"+req.body.fname+"','"+req.body.sname+"','"+req.body.aux+"','"+req.body.wishlist+"'";
-  con.query(sql, function (error, results) {
+app.post('/postpeople', (req, res,next) => {
+  var sql = "INSERT INTO people VALUES (NULL,'"+req.body.fname+"','"+req.body.sname+"',"+req.body.aux+",'"+req.body.wishlist+"')";
+  pool.query(sql, function (error, results) {
     if (error) {
         return res.status(500).json(error);
     }
-    res.status(200).json("Form Submition Successful");
+    res.status(200).json("Form Submission Successful");
     });
 })
 
