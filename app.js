@@ -47,6 +47,22 @@ app.post('/postpeople', (req, res) => {
     });
 })
 
+app.post('/reshuffletanan',(req,res)=>{
+  var arr = [];
+  var sql = "SELECT * FROM exchange"
+  con.query(sql , (err, results)=>{
+    if(err){
+      return res.status(500).json("There was something wrong with the shuffle")
+    }
+
+    results.forEach(element => {
+      arr.push(element.id)
+    });
+
+    res.status(200).json(arr)
+  })
+})
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
