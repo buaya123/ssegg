@@ -57,10 +57,11 @@ app.post('/postpeople', (req, res,next) => {
     });
 })
 
-app.get('/reshuffletanan',(req,res)=>{
+app.get('/reshuffletanan',async (req,res)=>{
   var arr = [];
-  var sql = "SELECT * FROM exchange"
-  con.query(sql , (err, results)=>{
+  var sql_arr = [];
+  var sql = "SELECT * FROM people"
+   pool.query(sql , (err, results)=>{
     if(err){
       return res.status(500).json("There was something wrong with the shuffle")
     }
@@ -69,7 +70,36 @@ app.get('/reshuffletanan',(req,res)=>{
       arr.push(element.id)
     });
 
-    res.status(200).json(arr)
+    arr = shuffle(arr)
+    console.log(arr)
+    
+    for(var i = 0 ; i < arr.length-1 ; i ++){
+      sql_arr.push([arr[i],arr[i+1]])
+    }
+      sql_arr.push([arr[i],arr[0]]);
+      var values = sql_arr;
+
+    var sql = "INSERT INTO exchange (exchange_from,exchange_to) VALUES ?";
+    pool.query(sql, [sql_arr], (err)=>{
+      if(err){
+        return res.status(500).json("There was something wrong with the shuffle 2")
+      }
+      res.status(200).json(sql_arr)
+    })
+
+   
+  })
+})
+
+app.get('/getexchange',(req,res)=>{
+  var sql = "SELECT sname,wishlist FROM people"
+
+  pool.query(sql,(err,results)=>{
+    if (err){
+      return res.status(500).json("There's something wrong with Santa's list")
+    }
+
+    res.status(200).json(results)
   })
 })
 
