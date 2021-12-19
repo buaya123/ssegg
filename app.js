@@ -92,7 +92,7 @@ app.get('/reshuffletanan',async (req,res)=>{
 })
 
 app.get('/getexchange',(req,res)=>{
-  var sql = "SELECT sname,wishlist,exchange_to FROM people LEFT JOIN exchange ON exchange.exchange_from = people.id"
+  var sql = "SELECT sname,exchange.exchange_to FROM people LEFT JOIN exchange ON exchange.exchange_from = people.id"
 
   pool.query(sql,(err,results)=>{
     if (err){
@@ -100,6 +100,17 @@ app.get('/getexchange',(req,res)=>{
     }
 
     res.status(200).json(results)
+  })
+})
+
+app.get('/getsamaritan/:id',(req,res)=>{
+  var sql = "SELECT sname,wishlist FROM people WHERE id="+req.params.id;
+
+  pool.query(sql,(err, result)=>{
+    if(err) return res.status(500).json("There's something wrong with Santa's List")
+
+    res.status(200).json(result)
+
   })
 })
 
