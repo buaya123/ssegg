@@ -92,7 +92,7 @@ app.get('/reshuffletanan',async (req,res)=>{
 })
 
 app.get('/getexchange',(req,res)=>{
-  var sql = "SELECT sname,wishlist FROM people"
+  var sql = "SELECT sname,wishlist,exchange_to FROM people LEFT JOIN exchange ON exchange.exchange_from = people.id"
 
   pool.query(sql,(err,results)=>{
     if (err){
