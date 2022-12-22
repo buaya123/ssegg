@@ -60,7 +60,7 @@ app.post('/postpeople', (req, res,next) => {
 app.get('/reshuffletanan',async (req,res)=>{
   var arr = [];
   var sql_arr = [];
-  var sql = "SELECT * FROM people WHERE id>73";
+  var sql = "SELECT * FROM people WHERE id > 73"
    pool.query(sql , (err, results)=>{
     if(err){
       return res.status(500).json("There was something wrong with the shuffle")
